@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="STRinGS: Selective Text Refinement in Gaussian Splatting" />
+  <meta name="keywords"
+    content="Selective Text Refinement, Gaussian Splatting, STRinGS, Computer Vision, Graphics, IIITH, Text Refinement, 3D, Neural Rendering" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>STRinGS: Selective Text Refinement in Gaussian Splatting</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7LD70CG0X4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-7LD70CG0X4');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css" />
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css" />
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css" />
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  <link rel="stylesheet" href="./static/css/index.css" />
+  <link rel="icon" href="./static/images/favicon.png" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            STRinGS: Selective Text Refinement in Gaussian Splatting
+          </h1>
+          <h1 class="title is-4 publication-title">WACV 2026</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/abhinav-raundhal/">Abhinav Raundhal</a><sup>★</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/gauravbehera/">Gaurav Behera</a><sup>★</sup>,
+            </span>
+            <br />
+
+            <span class="author-block">
+              <a href="https://faculty.iiit.ac.in/~pjn/">P. J. Narayanan</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://ravika.github.io/">Ravi Kiran Sarvadevabhatla</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://makarandtapaswi.github.io/">Makarand Tapaswi</a>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              CVIT, IIIT Hyderabad 
+              <!-- <a href="https://cvit.iiit.ac.in/"> CVIT, IIIT Hyderabad </a> -->
+            </span>
+            <br />
+            <span class="author-block is-size-6"><sup>★</sup>Equal Contribution</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="https://www.youtube.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/strings-official/strings"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="far fa-images"></i>
+                  </span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </section> -->
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img id="teaser" src="./static/images/teaser.png" height="100%" />
+        <h2 class="subtitle has-text-centered">
+          <b>STRinGS </b> produces sharper and readable text as compared to
+          vanilla 3DGS (shown at 7K iterations). The scatter plot presents
+          readability (CER, lower is better) vs training time. STRinGS
+          achieves the best performance both in terms of lowest error and
+          fastest training time.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Text as signs, labels, or instructions is a critical element of
+              real-world scenes as they can convey important contextual
+              information. 3D representations such as 3D Gaussian Splatting
+              (3DGS) struggle to preserve fine-grained text details, while
+              achieving high visual fidelity. Small errors in textual element
+              reconstruction can lead to significant semantic loss.
+            </p>
+            <p>
+              We propose STRinGS, a text-aware, selective refinement framework
+              to address this issue for 3DGS reconstruction. Our method treats
+              text and non-text regions separately, refining text regions
+              first and merging them with non-text regions later for
+              full-scene optimization. STRinGS produces sharp, readable text
+              even in challenging configurations. We introduce a text
+              readability measure OCR Character Error Rate (CER) to evaluate
+              the efficacy on text regions. STRinGS results in a 63.6%
+              relative improvement over 3DGS at just 7K iterations. We also
+              introduce a curated dataset STRinGS-360 with diverse text
+              scenarios to evaluate text readability in 3D reconstruction. Our
+              method and dataset together push the boundaries of 3D scene
+              understanding in text-rich environments, paving the way for more
+              robust text-aware reconstruction methods.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+      <!-- Paper video. -->
+      <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+      <!--/ Paper video. -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">STRinGS Pipeline</h2>
+          <div class="content has-text-justified">
+            <p>
+              Given input images, we use COLMAP to obtain a point cloud and
+              undistorted images, which are passed to Hi-SAM to obtain text
+              masks. The point cloud and masks are passed to the Text
+              Segmentation in 3D module to obtain partitioned text and
+              non-text point clouds. These are processed through a two-phase
+              pipeline. In phase 1, we perform targeted densification and
+              reconstruction of text Gaussians. In phase 2, we perform full
+              scene refinement, where text and non-text Gaussians are
+              optimized with distinct learning strategies, enabling targeted
+              enhancement of text without compromising scene quality. The
+              final output is a text-refined Gaussian Splat representation
+              with enhanced text readability while preserving overall scene
+              fidelity.
+            </p>
+            <img src="./static/images/method.png" alt="STRinGS Methodology" />
+          </div>
+        </div>
+      </div>
+
+      <!-- <br/> -->
+    </div>
+  </section>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">STRinGS-360 Dataset</h2>
+          <div class="columns is-centered">
+            <div class="column is-half has-text-justified">
+              <p>
+                To address the lack of text-rich 3D scene datasets, we
+                introduce <b>STRinGS-360</b>, a curated dataset of five indoor
+                scenes featuring dense, semantically meaningful text. The
+                scenes include instructional text on a curved fire
+                extinguisher, tightly packed book titles, labeled chemical
+                bottles, geographical names on a globe, and academic books
+                with occlusions and repeated titles. Together, they span flat,
+                cylindrical, and spherical configurations, providing a
+                realistic benchmark for evaluating fine-grained text
+                reconstruction in 3D Gaussian Splatting.
+              </p>
+            </div>
+            <div class="column is-half">
+              <img src="./static/images/dataset.png" alt="STRinGS-360 Dataset" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <br/> -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Visual Comparisons</h2>
+          <h3 class="subtitle is-6">Results at 7K iterations</h3>
+          <!-- Tabs -->
+          <div class="tabs is-toggle">
+            <ul id="dataset-tabs">
+              <li class="is-active" data-target="dataset5"><a>Shelf</a></li>
+              <li data-target="dataset3"><a>Chemicals</a></li>
+              <li data-target="dataset4"><a>Globe</a></li>
+              <li data-target="dataset1">
+                <a>Extinguisher</a>
+              </li>
+              <li data-target="dataset2"><a>Books</a></li>
+            </ul>
+          </div>
+
+          <!-- Dataset Panels -->
+          <div id="dataset-panels">
+            <div id="dataset1" class="dataset-panel">
+              <div class="columns is-centered">
+                <div class="column is-half">
+                  <div id="ds1_comp1" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/extinguisher/ours_1.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/extinguisher/3dgs_1.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-half">
+                  <div id="ds1_comp2" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/extinguisher/ours_2.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/extinguisher/3dgs_2.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="dataset2" class="dataset-panel">
+              <div class="columns is-centered">
+                <div class="column is-half">
+                  <div id="ds2_comp1" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/books/ours_1.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/books/3dgs_1.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="column is-half">
+                  <div id="ds2_comp2" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/books/ours_2.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/books/3dgs_2.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="dataset3" class="dataset-panel">
+              <div class="columns is-centered">
+                <div class="column is-half">
+                  <div id="ds3_comp1" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/chemicals/ours_1.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/chemicals/3dgs_1.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-half">
+                  <div id="ds3_comp2" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/chemicals/ours_2.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/chemicals/3dgs_2.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="dataset4" class="dataset-panel">
+              <div class="columns is-centered">
+                <div class="column is-half">
+                  <div id="ds4_comp1" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/globe/ours_1.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/globe/3dgs_1.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-half">
+                  <div id="ds4_comp2" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/globe/ours_2.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/globe/3dgs_2.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="dataset5" class="dataset-panel  is-active">
+              <div class="columns is-centered">
+                <div class="column is-half">
+                  <div id="ds5_comp1" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/shelf/ours_1.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/shelf/3dgs_1.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="column is-half">
+                  <div id="ds5_comp2" class="bal-container-small">
+                    <div class="bal-after">
+                      <img src="static/comparisons/shelf/ours_2.png" />
+                      <div class="bal-afterPosition afterLabel">
+                        STRinGS (Ours)
+                      </div>
+                    </div>
+                    <div class="bal-before">
+                      <div class="bal-before-inset">
+                        <img src="static/comparisons/shelf/3dgs_2.png" />
+                        <div class="bal-beforePosition beforeLabel">3DGS</div>
+                      </div>
+                    </div>
+                    <div class="bal-handle">
+                      <span class="handle-left-arrow"></span>
+                      <span class="handle-right-arrow"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Results</h2>
+          <div class="columns is-centered">
+            <div class="column is-half">
+              <img src="./static/images/results_ocr.png" alt="OCR-CER Results" />
+              <p>
+                OCR-based Character Error Rate (CER) on rendered images at 7K
+                and 30K training iterations averaged over all scenes in the
+                dataset. Lower CER indicates better text readability.
+              </p>
+            </div>
+            <div class="column is-half">
+              <img src="./static/images/results_time.png" alt="Training Time Results" />
+              <p>
+                Training time in minutes at 7K and 30K training iterations,
+                averaged over all scenes in the dataset.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{STRinGS_2026_WACV,
+  author    = {Raundhal, Abhinav and Behera, Gaurav and Narayanan, P. J. and Sarvadevabhatla, Ravi Kiran and Tapaswi, Makarand},
+  title     = {STRinGS: Selective Text Refinement in Gaussian Splatting},
+  booktitle = {Proceedings of the Winter Conference on Applications of Computer Vision (WACV)},
+  month     = {March},
+  year      = {2026},
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/strings-official" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website was adapted from
+              <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>
+              and is licensed under a
+              <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+                Attribution-ShareAlike 4.0 International
+                License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="static/js/script.js"></script>
+
+  <script>
+    new BeforeAfter({
+      id: "#ds1_comp1",
+    });
+    new BeforeAfter({
+      id: "#ds1_comp2",
+    });
+    new BeforeAfter({
+      id: "#ds2_comp1",
+    });
+    new BeforeAfter({
+      id: "#ds2_comp2",
+    });
+    new BeforeAfter({
+      id: "#ds3_comp1",
+    });
+    new BeforeAfter({
+      id: "#ds3_comp2",
+    });
+    new BeforeAfter({
+      id: "#ds4_comp1",
+    });
+    new BeforeAfter({
+      id: "#ds4_comp2",
+    });
+    new BeforeAfter({
+      id: "#ds5_comp1",
+    });
+    new BeforeAfter({
+      id: "#ds5_comp2",
+    });
+  </script>
+</body>
+
+</html>
